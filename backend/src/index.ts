@@ -1,41 +1,86 @@
 import express from "express";
-import http from "http";
-import cors from "cors";
+import { createServer } from "http";
 import { Server } from "socket.io";
+import mongoose from "mongoose";
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
 import dotenv from "dotenv";
+import { errorHandler } from "./middleware/errorHandler";
+import { logger } from "./utils/logger";
+import authRoutes from "./routes/auth.routes";
+import userRoutes from "./routes/user.routes";
+import conversationRoutes from "./routes/conversation.routes";
+import messageRoutes from "./routes/message.routes";
+import { initializeSocketHandlers } from "./socket/handlers";
+import { rateLimiter } from "./middleware/rateLimiter";
 import { connectDB } from "./config/db";
 
-import authRoutes from "./routes/auth";
-
 dotenv.config();
-connectDB();
 
 const app = express();
-const server = http.createServer(app);
-
-const io = new Server(server, {
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    credentials: true,
   },
 });
 
-app.use(cors());
+// Middleware
+app.use(helmet());
+app.use(compression());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(rateLimiter);
 
+// Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/conversations", conversationRoutes);
+app.use("/api/messages", messageRoutes);
 
-app.get("/", (req, res) => {
-  res.send("API is running");
+// Health check
+app.get("/health", (req, res) => {
+  res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
-io.on("connection", (socket) => {
-  console.log("New client connected:", socket.id);
+// Error handling
+app.use(errorHandler);
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected:", socket.id);
+// Initialize Socket.io handlers
+initializeSocketHandlers(io);
+
+// Database connection
+connectDB()
+
+// Graceful shutdown
+process.on("SIGTERM", () => {
+  logger.info("SIGTERM signal received: closing HTTP server");
+  httpServer.close(() => {
+    logger.info("HTTP server closed");
+    mongoose.connection
+      .close()
+      .then(() => {
+        logger.info("MongoDB connection closed");
+        process.exit(0);
+      })
+      .catch((err) => {
+        logger.error("Error closing MongoDB connection", err);
+        process.exit(1);
+      });
+  
   });
 });
-
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+httpServer.listen(PORT, () => {
+  logger.info(`Server running on http://localhost:${PORT}`);
+});
+export { io };
