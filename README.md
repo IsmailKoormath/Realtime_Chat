@@ -47,8 +47,8 @@ A modern, scalable real-time chat application built with Next.js, Express.js, Mo
 
 1. Clone the repository:
 
-git clone https://github.com/yourusername/nexchat.git
-cd nexchat
+git clone [https://github.com/yourusername/nexchat.git](https://github.com/IsmailKoormath/Realtime_Chat.git)
+cd Realtime_Chat
 
 2. Install dependencies:
 
