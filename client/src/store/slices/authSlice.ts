@@ -3,7 +3,6 @@ import {
   User,
   LoginCredentials,
   RegisterCredentials,
-  AuthResponse,
 } from "../../../../shared/index";
 import { authAPI } from "@/services/api";
 import { toast } from "react-hot-toast";

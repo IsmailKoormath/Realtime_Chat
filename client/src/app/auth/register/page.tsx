@@ -40,7 +40,7 @@ export default function RegisterPage() {
   const onSubmit = async (
     data: RegisterCredentials & { confirmPassword: string }
   ) => {
-    const { confirmPassword, ...credentials } = data;
+    const {...credentials } = data;
     const result = await dispatch(registerUser(credentials));
     if (registerUser.fulfilled.match(result)) {
       router.push("/chat");

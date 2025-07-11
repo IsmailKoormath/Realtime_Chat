@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ChatBubbleLeftRightIcon,
   UserGroupIcon,
@@ -16,6 +16,7 @@ import { setActiveView, toggleSidebar, setSearchQuery } from '@/store/slices/uiS
 import ConversationList from './ConversationList';
 import UserProfile from './UserProfile';
 import NewConversationModal from './NewConversationModal';
+import { AnyCaaRecord } from 'dns';
 
 export default function Sidebar() {
   const dispatch = useAppDispatch();

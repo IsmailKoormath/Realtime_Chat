@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { fetchMessages, resetUnreadCount } from "@/store/slices/messageSlice";
 import { socketService } from "@/services/socket";

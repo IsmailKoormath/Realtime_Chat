@@ -57,7 +57,7 @@ export default function MessageList({
         }
         groups[dateKey].push(message);
       } catch (error) {
-        console.error("Invalid message date:", message.createdAt);
+        console.error("Invalid message date:", message.createdAt, error);
       }
     });
 
@@ -75,7 +75,8 @@ export default function MessageList({
 
       return format(date, "EEEE, MMMM d");
     } catch (error) {
-      return "Invalid Date";
+      console.log(error)
+      return "Invalid Date" ;
     }
   };
 

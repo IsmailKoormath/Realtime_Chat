@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { store } from '@/store';
 import { logout } from '@/store/slices/authSlice';
-import { LoginCredentials, RegisterCredentials, User, Conversation, Message } from '../../../shared/index';
+import { LoginCredentials, RegisterCredentials, Conversation } from '../../../shared/index';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 

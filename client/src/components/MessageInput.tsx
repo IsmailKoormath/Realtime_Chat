@@ -5,10 +5,9 @@ import {
   PaperAirplaneIcon,
   PaperClipIcon,
   FaceSmileIcon,
-  PhotoIcon,
 } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { sendMessage } from "@/store/slices/messageSlice";
 import { socketService } from "@/services/socket";
 
@@ -93,7 +92,7 @@ export default function MessageInput({ conversationId }: MessageInputProps) {
     }
   };
 
-  const handleEmojiClick = (emojiObject: any) => {
+  const handleEmojiClick = (emojiObject: { emoji: string; }) => {
     setMessage((prev) => prev + emojiObject.emoji);
     setShowEmojiPicker(false);
     handleTyping(); // Trigger typing when emoji is added

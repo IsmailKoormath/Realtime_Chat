@@ -83,7 +83,7 @@ export default function ConversationList() {
 
       return format(date, "HH:mm");
     } catch (error) {
-      console.error("Invalid date:", dateString);
+      console.error("Invalid date:", dateString,error);
       return "";
     }
   };

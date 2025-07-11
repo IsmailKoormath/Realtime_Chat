@@ -44,6 +44,7 @@ export default function UserProfile({ user, expanded }: UserProfileProps) {
       dispatch(updateUser(response.data));
       toast.success("Avatar updated successfully");
     } catch (error) {
+      console.log(error);
       toast.error("Failed to update avatar");
     } finally {
       setLoading(false);
@@ -67,6 +68,7 @@ export default function UserProfile({ user, expanded }: UserProfileProps) {
       toast.success("Username updated successfully");
     } catch (error) {
       toast.error("Failed to update username");
+      console.log(error);
       setUsername(user.username);
     } finally {
       setLoading(false);

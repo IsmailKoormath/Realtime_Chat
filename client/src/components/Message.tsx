@@ -3,7 +3,7 @@
 import { format } from "date-fns";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { useAppSelector } from "@/store/hooks";
-import { Message as MessageType, User } from "../../../shared/index";
+import { Message as MessageType } from "../../../shared/index";
 import Avatar from "./Avatar";
 
 interface MessageProps {
